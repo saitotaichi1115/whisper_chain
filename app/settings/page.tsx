@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
-import appIcon from "../apple-touch-icon.png";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 

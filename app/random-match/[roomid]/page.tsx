@@ -1,6 +1,6 @@
 import { redis } from "@/lib/redis";
 import { redirect } from "next/navigation";
-import { LobbyClient } from "./LobbyClient";
+import { RoomContainer } from "./RoomContainer";
 
 interface PageProps {
     params: Promise<{ roomid: string }>;
@@ -13,19 +13,24 @@ export default async function RandomMatchLobby({ params }: PageProps) {
     // Fetch initial room state
     const roomState = await redis.hgetall(`room:${roomId}`);
 
-    // If room does not exist, redirect back to start
+    // If room does not exist or status is missing, redirect back to start
     if (!roomState || !roomState.status) {
         redirect('/start-game');
     }
 
-    const playersCount = Number(roomState.players) || 1;
-    const MAX_PLAYERS = 4;
+    const players = await redis.smembers(`room:${roomId}:players`);
+    const playersCount = players.length;
+    const MAX_PLAYERS = 6;
+    const initialStatus = roomState.status as string;
+    const MIN_PLAYERS = parseInt(process.env.MIN_PLAYERS || "4");
 
     return (
-        <LobbyClient
+        <RoomContainer
             roomId={roomId}
             initialPlayers={playersCount}
             maxPlayers={MAX_PLAYERS}
+            minPlayers={MIN_PLAYERS}
+            initialStatus={initialStatus}
         />
     );
 }
