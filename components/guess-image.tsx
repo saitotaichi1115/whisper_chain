@@ -75,7 +75,7 @@ export function GuessImage({ previousImageUrl, onNext }: GuessImageProps) {
                             <textarea
                                 value={interpretation}
                                 onChange={(e) => setInterpretation(e.target.value)}
-                                className="w-full min-h-[160px] p-6 text-xl bg-background-light dark:bg-[#1f152b] border-2 border-primary/20 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300 dark:placeholder:text-slate-700 resize-none"
+                                className="w-full min-h-[240px] p-6 text-xl bg-background-light dark:bg-[#1f152b] border-2 border-primary/20 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-300 dark:placeholder:text-slate-700 resize-none"
                                 placeholder="Describe what you see to generate your image..."
                             ></textarea>
                             <div className="absolute bottom-4 right-4 py-2 flex items-center gap-2">
@@ -91,28 +91,6 @@ export function GuessImage({ previousImageUrl, onNext }: GuessImageProps) {
                                     <span className="material-symbols-outlined">restart_alt</span>
                                 </button>
                             </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-4 flex-1">
-                        <div className="flex items-center justify-between">
-                            <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Preview</div>
-                            {isGenerating && (
-                                <div className="text-xs text-primary animate-pulse flex items-center gap-1">
-                                    <span className="size-1.5 bg-primary rounded-full animate-ping"></span>
-                                    Waiting for generation...
-                                </div>
-                            )}
-                        </div>
-                        <div className="relative h-64 bg-background-light dark:bg-[#1f152b] border-2 border-dashed border-primary/20 rounded-2xl flex items-center justify-center overflow-hidden">
-                            {generatedImageUrl ? (
-                                <img src={generatedImageUrl} alt="Generated preview" className="w-full h-full object-cover" />
-                            ) : (
-                                <div className="text-slate-500 flex flex-col items-center gap-2">
-                                    <span className="material-symbols-outlined text-3xl">image_search</span>
-                                    <span className="text-xs uppercase tracking-tighter">Your generated image will appear here</span>
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>

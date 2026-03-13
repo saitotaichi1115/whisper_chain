@@ -57,12 +57,12 @@ export function GameClient({ roomId }: GameClientProps) {
     };
 
     return (
-        <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 h-screen flex flex-col font-display overflow-hidden relative">
+        <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display overflow-y-auto relative">
             {/* Background Decoration */}
             <div className="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full -z-10 pointer-events-none"></div>
             <div className="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-900/10 blur-[120px] rounded-full -z-10 pointer-events-none"></div>
 
-            <main className="flex-1 flex flex-col items-center justify-center px-6 pt-6 pb-6 overflow-hidden">
+            <main className="flex-1 flex flex-col items-center justify-center px-6 pt-6 pb-6">
                 {phase === 'initial' ? (
                     <div className="w-full max-w-3xl">
                         <GameProgressTracker />
