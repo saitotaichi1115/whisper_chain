@@ -7,7 +7,7 @@ export function JoinRandomMatchButton() {
     const [isPending, startTransition] = useTransition();
 
     const handleJoin = () => {
-        let playerId = localStorage.getItem('whisper_chain_player_id');
+        let playerId = localStorage.getItem('morph_morph_player_id');
         if (!playerId) {
             // Fallback for non-secure contexts (e.g. non-localhost/non-HTTPS)
             if (typeof crypto !== 'undefined' && crypto.randomUUID) {
@@ -15,7 +15,7 @@ export function JoinRandomMatchButton() {
             } else {
                 playerId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             }
-            localStorage.setItem('whisper_chain_player_id', playerId);
+            localStorage.setItem('morph_morph_player_id', playerId);
         }
         startTransition(() => joinRandomMatch(playerId));
     }

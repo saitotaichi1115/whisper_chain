@@ -8,7 +8,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Whisper Chain",
+  title: "Morph Morph",
   description: "The classic 'Broken Telephone' game evolved.",
 };
 

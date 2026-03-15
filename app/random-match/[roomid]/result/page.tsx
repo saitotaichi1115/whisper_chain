@@ -48,7 +48,7 @@ export default function ResultPage({ params }: ResultPageProps) {
         { label: 'Players', value: '5', icon: 'groups' },
         { label: 'Drift Rate', value: 'Low', icon: 'trending_down' },
         { label: 'Time Elapsed', value: '12:45', icon: 'timer' },
-        { label: 'Chain Tokens', value: '142k', icon: 'database' }
+        { label: 'Image Tokens', value: '142k', icon: 'database' }
     ];
 
     return (
@@ -102,8 +102,8 @@ export default function ResultPage({ params }: ResultPageProps) {
                         <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-gradient-to-b from-primary via-purple-600 to-slate-200 dark:to-slate-800 hidden lg:block -translate-x-1/2"></div>
 
                         {evolutionSteps.map((step, index) => (
-                            <div 
-                                key={index} 
+                            <div
+                                key={index}
                                 className={`relative flex flex-col ${index % 2 === 0 ? 'lg:items-end lg:text-right' : 'lg:items-start lg:text-left'} group`}
                             >
                                 {/* Mobile/Line Marker */}
@@ -125,8 +125,8 @@ export default function ResultPage({ params }: ResultPageProps) {
                                         </div>
                                     ) : (
                                         <div className="relative group/img overflow-hidden rounded-2xl border-2 border-slate-100 dark:border-primary/10 shadow-lg group-hover:border-primary/30">
-                                            <img 
-                                                src={step.imageUrl} 
+                                            <img
+                                                src={step.imageUrl}
                                                 alt={`Step ${index + 1} generation`}
                                                 className="w-full h-auto aspect-square object-cover transform transition-transform duration-700 group-hover/img:scale-105"
                                             />
@@ -147,7 +147,7 @@ export default function ResultPage({ params }: ResultPageProps) {
                 {/* Footer Stats & Actions */}
                 <section className="bg-slate-900 text-white rounded-[3rem] p-12 mb-24 relative overflow-hidden shadow-3xl">
                     <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[120%] bg-primary/20 blur-[150px] rounded-full -z-10 animate-pulse"></div>
-                    
+
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         <div className="space-y-8">
                             <h2 className="text-3xl font-bold">Session Analytics</h2>

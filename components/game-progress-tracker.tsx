@@ -4,7 +4,7 @@ export function GameProgressTracker() {
             <div className="flex items-center justify-between mb-4">
                 <div className="flex flex-col">
                     <span className="text-primary font-bold text-xs uppercase tracking-widest">Current Session</span>
-                    <h3 className="text-lg font-bold">The Creative Chain</h3>
+                    <h3 className="text-lg font-bold">Create first image</h3>
                 </div>
                 <div className="text-right">
                     <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Player 1 of 6</span>

@@ -22,7 +22,7 @@ export default function StartGame() {
                         </div>
                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Random Match</h3>
                         <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-                            Jump straight into the action! Join a public lobby and play with AI whisperers from around the globe in a chaotic game of visual telephone.
+                            Jump straight into the action! Join a public lobby and play with AI prompters from around the globe in a chaotic game of visual telephone.
                         </p>
                         <div className="mt-auto w-full space-y-4">
                             <div className="flex items-center justify-center gap-2 text-sm text-primary font-medium">

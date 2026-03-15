@@ -7,8 +7,8 @@ export function Footer() {
             <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                 <div className="flex flex-col gap-2 items-center md:items-start">
                     <div className="flex items-center gap-2">
-                        <Image src={appIcon} alt="Whisper Chain Logo" className="w-6 h-6 rounded-md" />
-                        <span className="font-bold text-lg">Whisper Chain</span>
+                        <Image src={appIcon} alt="Morph Morph Logo" className="w-6 h-6 rounded-md" />
+                        <span className="font-bold text-lg">Morph Morph</span>
                     </div>
                     <p className="text-slate-500 text-sm">© 2026 Saito Taichi</p>
                 </div>

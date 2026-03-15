@@ -38,7 +38,7 @@ export default function Settings() {
                                         </div>
                                     </div>
                                     <div>
-                                        <h4 className="text-xl font-bold text-slate-900 dark:text-white">CyberWhisperer</h4>
+                                        <h4 className="text-xl font-bold text-slate-900 dark:text-white">morphmorph123</h4>
                                         <p className="text-slate-500 dark:text-slate-400 text-sm">Member since June 2024</p>
                                     </div>
                                 </div>

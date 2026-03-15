@@ -22,7 +22,7 @@ export function GameClient({ roomId }: GameClientProps) {
             // Use a small delay to check if we actually left the room URL
             setTimeout(() => {
                 if (!window.location.pathname.includes(roomId)) {
-                    const playerId = localStorage.getItem('whisper_chain_player_id');
+                    const playerId = localStorage.getItem('morph_morph_player_id');
                     if (playerId) {
                         leaveRoom(roomId, playerId);
                     }
@@ -34,7 +34,7 @@ export function GameClient({ roomId }: GameClientProps) {
     // Cleanup on tab close/refresh
     useEffect(() => {
         const handleBeforeUnload = () => {
-            const playerId = localStorage.getItem('whisper_chain_player_id');
+            const playerId = localStorage.getItem('morph_morph_player_id');
             if (playerId) {
                 leaveRoom(roomId, playerId);
             }
@@ -69,7 +69,7 @@ export function GameClient({ roomId }: GameClientProps) {
                         {/* Main Input Area */}
                         <div className="space-y-4 text-center">
                             <div className="space-y-2">
-                                <h2 className="text-4xl font-black tracking-tight dark:text-white">Start the Chain</h2>
+                                <h2 className="text-4xl font-black tracking-tight dark:text-white">Start first image</h2>
                                 <p className="text-lg text-slate-600 dark:text-slate-400 font-light">Your prompt will generate the first image. Make it memorable.</p>
                             </div>
 

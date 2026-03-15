@@ -40,7 +40,7 @@ export function LobbyClient({ roomId, initialPlayers, maxPlayers, minPlayers, in
             // Use a small delay to check if we actually left the room URL
             setTimeout(() => {
                 if (!window.location.pathname.includes(roomId)) {
-                    const playerId = localStorage.getItem('whisper_chain_player_id');
+                    const playerId = localStorage.getItem('morph_morph_player_id');
                     if (playerId) {
                         leaveRoom(roomId, playerId);
                     }
@@ -52,7 +52,7 @@ export function LobbyClient({ roomId, initialPlayers, maxPlayers, minPlayers, in
     // Cleanup on tab close/refresh
     useEffect(() => {
         const handleBeforeUnload = () => {
-            const playerId = localStorage.getItem('whisper_chain_player_id');
+            const playerId = localStorage.getItem('morph_morph_player_id');
             if (playerId) {
                 leaveRoom(roomId, playerId);
             }

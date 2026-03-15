@@ -25,10 +25,10 @@ export default function Home() {
               New: Stable Diffusion XL Support
             </div>
             <h1 className="text-slate-900 dark:text-white text-6xl md:text-8xl font-black leading-tight tracking-tighter drop-shadow-sm">
-              Whisper <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">Chain</span>
+              Morph <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">Morph</span>
             </h1>
             <p className="text-slate-600 dark:text-slate-400 text-lg md:text-xl max-w-2xl leading-relaxed">
-              The classic 'Broken Telephone' game evolved. Start with a prompt, see the AI art, and guess the description to see how the whisper changes.
+              The classic 'Broken Telephone' game evolved. Start with a prompt, see the AI art, and guess the description to see how the image changes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full justify-center max-w-md">
               <Link href="/start-game" className="flex-1 flex items-center justify-center gap-2 rounded-xl h-14 px-8 bg-primary text-white text-lg font-bold transition-all hover:shadow-[0_0_20px_rgba(127,19,236,0.4)] active:scale-95">
@@ -103,28 +103,28 @@ export default function Home() {
                   <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Abstract colorful AI generated fluid art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALcR71g5HrqWOjAjg6EG8yGTo0VaORM2NCMVq0fru0xOlRillIvWYaJFTpZcJ4CPZaXvV9uSfaTeFDPASyOg7vOzFelsCvGG4URNx9Vfca7SQMSmp7AOvuJUDawvQPiTxN7-WjfQqkv77nwDnf64s9NrlmmiQpp3twjLJBfLMZOCqh4OxeKFP5I7zpRtai8mg21U0wXtCIdcqXFnRQW6S2v_4CqCHl5WHGXzmHGqDZW-zKAIMsMGI31N3zf6gNglx8WbH-OafzrIo" />
                 </div>
                 <p className="font-bold text-slate-900 dark:text-white">Cyberpunk Forest</p>
-                <p className="text-xs text-slate-500">12 Whispers • 4 mins ago</p>
+                <p className="text-xs text-slate-500">12 Likes • 4 mins ago</p>
               </div>
               <div className="group cursor-pointer">
                 <div className="aspect-square rounded-2xl overflow-hidden mb-3 border border-primary/10">
                   <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Vibrant 3D geometric abstract rendering" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnMj8ahK2XnJqqDWhAcT5sn9EL7gGiyCy-Gh7WkW4GCfni5keYSD_2z-omZPdjFka-nLJSH9dIDtUpXJuZXm60x3rl_HrzOKpvdClMecof3IuDnfFLPCODatDiMqgCH3Z9CA8Y66TgXnIY8obuMOLHMF_Et67db_5Lq127eBSjJunebOiMpGdsjG3YlRS-RzXHoUMyGcoSmv29zSXv5RIX3c4QdQtu9Jg1bRto5daurH49oBeML1y6LNFPsdHKkjH6okFcCC2DgRA" />
                 </div>
                 <p className="font-bold text-slate-900 dark:text-white">The Glitch King</p>
-                <p className="text-xs text-slate-500">8 Whispers • 15 mins ago</p>
+                <p className="text-xs text-slate-500">8 Likes • 15 mins ago</p>
               </div>
               <div className="group cursor-pointer">
                 <div className="aspect-square rounded-2xl overflow-hidden mb-3 border border-primary/10">
                   <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Surreal space landscape with nebula colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOCKqkujYx2XtKJOANQm8FbFr45VVUZv09rvBeEW3vzwtc5CBEJziD0uRd0EZmHLns6hIxJnXtUaX-1sGn79OGHkFVh8Axc1D-htCfGukNvxQU-M-MBgHpGqLTQrjoQsGACh3msxLamVlAAO_lINtPKhjA6Folp9yHnE44X6xSyM08yP8AHfMc6GYwPBw-yT8rhcrcxmyjK7FYxettrjGvs__Af5tyIxFi8Qc1aqvGLrkY-4foqO_GZ1WknM0W1FY38-0EG4Zh82k" />
                 </div>
                 <p className="font-bold text-slate-900 dark:text-white">Nebula Tea Party</p>
-                <p className="text-xs text-slate-500">15 Whispers • 1 hour ago</p>
+                <p className="text-xs text-slate-500">15 Likes • 1 hour ago</p>
               </div>
               <div className="group cursor-pointer">
                 <div className="aspect-square rounded-2xl overflow-hidden mb-3 border border-primary/10">
                   <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Minimalist purple and violet wave pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR-75Yas-rXULXFU8QrZvZoWEwO5WaD9jjBxTta_G3jmx5Vs4d85eqk2T0N9xzKQWlCB-MnJW1np9Pb6H_DshqsIabVYhv16rUybVXStsgyhCdB9trsUc2HrAtbeSZ1ZvEtO9H6Qwa0oZzWoLgxhlBbvclJhhlqiDWjG4Dwxl_fM8SoS7ww6xcJeqbIQ0CSXRwMwWzG5uIHalOMuYvuVklAv_yK4L8mRdCma-Ntz8j0fnqNpckn1BNvqcI_b_uas_yHxeWrGs0_HE" />
                 </div>
                 <p className="font-bold text-slate-900 dark:text-white">Digital Zen</p>
-                <p className="text-xs text-slate-500">6 Whispers • 2 hours ago</p>
+                <p className="text-xs text-slate-500">6 Likes • 2 hours ago</p>
               </div>
             </div>
           </div>
