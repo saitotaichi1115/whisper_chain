@@ -3,62 +3,90 @@
 import { redis } from "@/lib/redis";
 import { redirect } from "next/navigation";
 
-export async function joinRandomMatch(playerId: string) {
-    const MAX_PLAYERS = 6;
-    const MIN_PLAYERS = parseInt(process.env.MIN_PLAYERS || "4");
-    console.log(`joinRandomMatch: MIN_PLAYERS=${MIN_PLAYERS}`);
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+
+export async function joinRandomMatch() {
     // Fetch all waiting rooms and ready rooms
     const waitingRooms = await redis.smembers("waiting_rooms");
     const readyRooms = await redis.smembers("ready_rooms");
 
     let roomId = null;
 
-    // 1. Try to join a "ready" room first (prioritize rooms with 4-5 players)
+    // 1. Try to join a "ready" room first
     if (readyRooms && readyRooms.length > 0) {
         roomId = readyRooms[Math.floor(Math.random() * readyRooms.length)];
     }
-    // 2. Otherwise try to join a "waiting" room (1-3 players)
+    // 2. Otherwise try to join a "waiting" room
     else if (waitingRooms && waitingRooms.length > 0) {
         roomId = waitingRooms[Math.floor(Math.random() * waitingRooms.length)];
-    }
-
-    if (roomId) {
-        // Add player to the room's set of players
-        await redis.sadd(`room:${roomId}:players`, playerId);
-        const players = await redis.smembers(`room:${roomId}:players`);
-        const playerCount = players.length;
-
-        if (playerCount >= MAX_PLAYERS) {
-            // Room is full, move to playing
-            await redis.hset(`room:${roomId}`, { status: "playing" });
-            await redis.srem("ready_rooms", roomId);
-        } else if (playerCount >= MIN_PLAYERS) {
-            // Room is ready to start (4-5 players)
-            await redis.hset(`room:${roomId}`, { status: "ready" });
-            await redis.sadd("ready_rooms", roomId);
-            await redis.srem("waiting_rooms", roomId);
-        } else {
-            // Still waiting (1-3 players)
-            await redis.hset(`room:${roomId}`, { status: "waiting" });
-            await redis.sadd("waiting_rooms", roomId);
-        }
     }
 
     // 3. If no suitable room was found, create a new one
     if (!roomId) {
         roomId = crypto.randomUUID().slice(0, 8);
-        const status = (1 >= MIN_PLAYERS) ? "ready" : "waiting";
+        const status = "waiting";
         await redis.hset(`room:${roomId}`, { status });
-        await redis.sadd(`room:${roomId}:players`, playerId);
-        if (status === "ready") {
-            await redis.sadd("ready_rooms", roomId);
-        } else {
-            await redis.sadd("waiting_rooms", roomId);
-        }
+        await redis.sadd("waiting_rooms", roomId);
     }
 
     // Redirect to the room lobby
     redirect(`/random-match/${roomId}`);
+}
+
+export async function processPlayerEntry(roomId: string) {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    });
+
+    if (!session || !session.user) {
+        throw new Error("Unauthorized");
+    }
+
+    const playerId = session.user.id;
+    const MAX_PLAYERS = 6;
+    const MIN_PLAYERS = parseInt(process.env.MIN_PLAYERS || "4");
+
+    // Check if room exists
+    const roomState = await redis.hgetall(`room:${roomId}`);
+    if (!roomState || Object.keys(roomState).length === 0) {
+        return null;
+    }
+
+    // Add player to the room's set of players
+    const isMember = await redis.sismember(`room:${roomId}:players`, playerId);
+    if (!isMember) {
+        await redis.sadd(`room:${roomId}:players`, playerId);
+    }
+
+    const players = await redis.smembers(`room:${roomId}:players`);
+    const playerCount = players.length;
+
+    if (playerCount >= MAX_PLAYERS) {
+        // Room is full, move to playing
+        await redis.hset(`room:${roomId}`, { status: "playing" });
+        await redis.srem("ready_rooms", roomId);
+        await redis.srem("waiting_rooms", roomId);
+    } else if (playerCount >= MIN_PLAYERS) {
+        // Room is ready to start (4-5 players)
+        await redis.hset(`room:${roomId}`, { status: "ready" });
+        await redis.sadd("ready_rooms", roomId);
+        await redis.srem("waiting_rooms", roomId);
+    } else {
+        // Still waiting (1-3 players)
+        await redis.hset(`room:${roomId}`, { status: "waiting" });
+        await redis.sadd("waiting_rooms", roomId);
+        await redis.srem("ready_rooms", roomId);
+    }
+
+    return {
+        playerId,
+        roomState: {
+            ...roomState,
+            status: playerCount >= MAX_PLAYERS ? "playing" : playerCount >= MIN_PLAYERS ? "ready" : "waiting",
+            players: playerCount
+        }
+    };
 }
 
 export async function getRoomStatus(roomId: string) {

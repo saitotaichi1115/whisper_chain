@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { leaveRoom } from '@/app/actions/roomActions';
-import { GameProgressTracker } from '@/components/game-progress-tracker';
-import { GuessImage } from '@/components/guess-image';
+import { GameProgressTracker } from '@/components/random-match/game-progress-tracker';
+import { GuessImage } from '@/components/random-match/guess-image';
+import { useSession } from '@/lib/auth-client';
 
 interface GameClientProps {
     roomId: string;
@@ -12,6 +13,7 @@ interface GameClientProps {
 type GamePhase = 'initial' | 'guess_image';
 
 export function GameClient({ roomId }: GameClientProps) {
+    const { data: session } = useSession();
     const [prompt, setPrompt] = useState('');
     const [phase, setPhase] = useState<GamePhase>('initial');
     const [lastGeneratedImage, setLastGeneratedImage] = useState<string | null>(null);
@@ -21,20 +23,18 @@ export function GameClient({ roomId }: GameClientProps) {
         return () => {
             // Use a small delay to check if we actually left the room URL
             setTimeout(() => {
-                if (!window.location.pathname.includes(roomId)) {
-                    const playerId = localStorage.getItem('morph_morph_player_id');
-                    if (playerId) {
-                        leaveRoom(roomId, playerId);
-                    }
+                const playerId = session?.user?.id || localStorage.getItem('morph_morph_player_id');
+                if (!window.location.pathname.includes(roomId) && playerId) {
+                    leaveRoom(roomId, playerId);
                 }
             }, 1000); // 1s delay is safer for Next.js router transitions
         };
-    }, [roomId]);
+    }, [roomId, session?.user?.id]);
 
     // Cleanup on tab close/refresh
     useEffect(() => {
         const handleBeforeUnload = () => {
-            const playerId = localStorage.getItem('morph_morph_player_id');
+            const playerId = session?.user?.id || localStorage.getItem('morph_morph_player_id');
             if (playerId) {
                 leaveRoom(roomId, playerId);
             }
@@ -42,7 +42,7 @@ export function GameClient({ roomId }: GameClientProps) {
 
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    }, [roomId]);
+    }, [roomId, session?.user?.id]);
 
     const handleInitialGenerate = () => {
         // Transition to next phase

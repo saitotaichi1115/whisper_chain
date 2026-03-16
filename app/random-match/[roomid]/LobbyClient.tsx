@@ -4,8 +4,9 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { getRoomStatus, leaveRoom, startGame } from '@/app/actions/roomActions';
 import { Header } from '@/components/Header';
-import { TicTacToe } from '@/components/TicTacToe';
+import { TicTacToe } from '@/components/random-match/TicTacToe';
 import { GameClient } from './GameClient';
+import { useSession } from '@/lib/auth-client';
 
 interface LobbyClientProps {
     roomId: string;
@@ -16,11 +17,29 @@ interface LobbyClientProps {
 }
 
 export function LobbyClient({ roomId, initialPlayers, maxPlayers, minPlayers, initialStatus }: LobbyClientProps) {
+    const { data: session } = useSession();
     const router = useRouter();
     const [players, setPlayers] = useState(initialPlayers);
     const [status, setStatus] = useState(initialStatus);
     const [countdown, setCountdown] = useState<number | null>(null);
+    const [inviteText, setInviteText] = useState('Invite Player');
     const MIN_PLAYERS = minPlayers;
+
+    const handleInviteClick = async () => {
+        if (players >= maxPlayers) {
+            setInviteText('満員です！');
+            setTimeout(() => setInviteText('Invite Player'), 2000);
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            setInviteText('コピーしました！');
+            setTimeout(() => setInviteText('Invite Player'), 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+    };
     useEffect(() => {
         const interval = setInterval(async () => {
             const data = (await getRoomStatus(roomId)) as { players: number; status: string } | null;
@@ -39,20 +58,18 @@ export function LobbyClient({ roomId, initialPlayers, maxPlayers, minPlayers, in
         return () => {
             // Use a small delay to check if we actually left the room URL
             setTimeout(() => {
-                if (!window.location.pathname.includes(roomId)) {
-                    const playerId = localStorage.getItem('morph_morph_player_id');
-                    if (playerId) {
-                        leaveRoom(roomId, playerId);
-                    }
+                const playerId = session?.user?.id || localStorage.getItem('morph_morph_player_id');
+                if (!window.location.pathname.includes(roomId) && playerId) {
+                    leaveRoom(roomId, playerId);
                 }
             }, 1000);
         };
-    }, [roomId]);
+    }, [roomId, session?.user?.id]);
 
     // Cleanup on tab close/refresh
     useEffect(() => {
         const handleBeforeUnload = () => {
-            const playerId = localStorage.getItem('morph_morph_player_id');
+            const playerId = session?.user?.id || localStorage.getItem('morph_morph_player_id');
             if (playerId) {
                 leaveRoom(roomId, playerId);
             }
@@ -60,7 +77,7 @@ export function LobbyClient({ roomId, initialPlayers, maxPlayers, minPlayers, in
 
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    }, [roomId]);
+    }, [roomId, session?.user?.id]);
 
     // Countdown logic
     useEffect(() => {
@@ -98,10 +115,13 @@ export function LobbyClient({ roomId, initialPlayers, maxPlayers, minPlayers, in
                             <p className="text-primary/70 text-sm font-medium">Room Code: <span className="text-primary">#{roomId.toUpperCase()}</span></p>
                         </div>
                         <div className="space-y-4">
-                            <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/20">
+                            <button
+                                onClick={handleInviteClick}
+                                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors cursor-pointer"
+                            >
                                 <span className="material-symbols-outlined">groups</span>
-                                <p className="text-sm font-bold">Invite Player</p>
-                            </div>
+                                <p className="text-sm font-bold">{inviteText}</p>
+                            </button>
                         </div>
                     </div>
 
@@ -170,19 +190,4 @@ export function LobbyClient({ roomId, initialPlayers, maxPlayers, minPlayers, in
             </main>
         </div>
     );
-}
-
-function calculateWinner(squares: (string | null)[]) {
-    const lines = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
-        [0, 4, 8], [2, 4, 6]             // diagonals
-    ];
-    for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
-        }
-    }
-    return null;
 }
