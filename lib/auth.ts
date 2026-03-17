@@ -5,6 +5,9 @@ import { Pool } from 'pg';
 export const auth = betterAuth({
     database: new Pool({
         connectionString: process.env.aiartgame_POSTGRES_URL!,
+        ssl: {
+            rejectUnauthorized: true,
+        },
     }),
     emailAndPassword: {
         enabled: false,
