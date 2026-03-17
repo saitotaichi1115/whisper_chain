@@ -7,6 +7,7 @@ export const auth = betterAuth({
         connectionString: process.env.aiartgame_POSTGRES_URL!,
         ssl: {
             rejectUnauthorized: true,
+            ca: process.env.CERTIFICATE,
         },
     }),
     emailAndPassword: {
