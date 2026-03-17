@@ -6,8 +6,7 @@ export const auth = betterAuth({
     database: new Pool({
         connectionString: process.env.aiartgame_POSTGRES_URL!,
         ssl: {
-            rejectUnauthorized: true,
-            ca: process.env.CERTIFICATE,
+            rejectUnauthorized: false,
         },
     }),
     emailAndPassword: {
