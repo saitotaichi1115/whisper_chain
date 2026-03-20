@@ -5,17 +5,18 @@ import { leaveRoom } from '@/app/actions/roomActions';
 import { GameProgressTracker } from '@/components/random-match/game-progress-tracker';
 import { GuessImage } from '@/components/random-match/guess-image';
 import { useSession } from '@/lib/auth-client';
+import { createAndSaveImage } from '@/app/actions/useImage';
 
 interface GameClientProps {
     roomId: string;
 }
 
-type GamePhase = 'initial' | 'guess_image';
+type ChainPhase = 'initial' | 'guess_image';
 
 export function GameClient({ roomId }: GameClientProps) {
     const { data: session } = useSession();
     const [prompt, setPrompt] = useState('');
-    const [phase, setPhase] = useState<GamePhase>('initial');
+    const [phase, setPhase] = useState<ChainPhase>('initial');
     const [lastGeneratedImage, setLastGeneratedImage] = useState<string | null>(null);
 
     // Reliable cleanup on unmount/navigation
@@ -23,7 +24,7 @@ export function GameClient({ roomId }: GameClientProps) {
         return () => {
             // Use a small delay to check if we actually left the room URL
             setTimeout(() => {
-                const playerId = session?.user?.id || localStorage.getItem('morph_morph_player_id');
+                const playerId = session?.user?.id;
                 if (!window.location.pathname.includes(roomId) && playerId) {
                     leaveRoom(roomId, playerId);
                 }
@@ -34,7 +35,7 @@ export function GameClient({ roomId }: GameClientProps) {
     // Cleanup on tab close/refresh
     useEffect(() => {
         const handleBeforeUnload = () => {
-            const playerId = session?.user?.id || localStorage.getItem('morph_morph_player_id');
+            const playerId = session?.user?.id;
             if (playerId) {
                 leaveRoom(roomId, playerId);
             }
@@ -44,7 +45,9 @@ export function GameClient({ roomId }: GameClientProps) {
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, [roomId, session?.user?.id]);
 
-    const handleInitialGenerate = () => {
+    const handleInitialGenerate = async () => {
+        const imageUrl = await createAndSaveImage(prompt, roomId, 1, session?.user?.id!);
+        console.log(imageUrl);
         // Transition to next phase
         setPhase('guess_image');
     };

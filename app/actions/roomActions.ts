@@ -5,13 +5,13 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-
+//部屋の入退出、ゲームの開始を管理する
 export async function joinRandomMatch() {
     // Fetch all waiting rooms and ready rooms
     const waitingRooms = await redis.smembers("waiting_rooms");
     const readyRooms = await redis.smembers("ready_rooms");
 
-    let roomId = null;
+    let roomId: null | string = null;
 
     // 1. Try to join a "ready" room first
     if (readyRooms && readyRooms.length > 0) {
@@ -25,7 +25,8 @@ export async function joinRandomMatch() {
     // 3. If no suitable room was found, create a new one
     if (!roomId) {
         roomId = crypto.randomUUID().slice(0, 8);
-        const status = "waiting";
+        type GameStatus = "waiting" | "ready" | "playing" | "result";
+        const status: GameStatus = "waiting";
         await redis.hset(`room:${roomId}`, { status });
         await redis.sadd("waiting_rooms", roomId);
     }
@@ -102,6 +103,7 @@ export async function getRoomStatus(roomId: string) {
         players: players.length
     };
 }
+
 export async function leaveRoom(roomId: string, playerId: string) {
     await redis.srem(`room:${roomId}:players`, playerId);
     const players = await redis.smembers(`room:${roomId}:players`);

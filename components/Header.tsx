@@ -18,9 +18,9 @@ export function Header() {
                     <a className="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors text-sm font-medium" href="#">Leaderboard</a>
                 </nav>
                 <div className="h-6 w-px bg-slate-200 dark:bg-primary/20"></div>
-                <button className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold transition-all hover:opacity-90 active:scale-95">
+                <Link href="/settings/login" className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold transition-all hover:opacity-90 active:scale-95">
                     Sign In
-                </button>
+                </Link>
             </div>
         </header>
     );
